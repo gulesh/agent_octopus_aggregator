@@ -29,18 +29,16 @@ from academy.exchange import LocalExchangeFactory
 
 EXCHANGE_ADDRESS = 'https://exchange.academy-agents.org'
 
-
 class ChatBot(Agent):
     def __init__(self, msg: str, topic_name: str, bot_num: int) -> None:
         super().__init__()
         self.message = msg
         self.bot_num = bot_num
-        # self.logger_unreg = set_diaspora_logger(topic_name=topic_name, name="station")
 
     @action
     async def respond(self) -> str:
         station_logger = logging.getLogger("station")
-        station_logger.info('Boti %d', self.bot_num)
+        station_logger.info('Bot %d', self.bot_num)
         return self.message
 
 class Facilitator(Agent):
@@ -59,9 +57,10 @@ class Facilitator(Agent):
         station_logger.info('Bot1 says: %s', msg1)
         station_logger.info('Bot2 says: %s', msg2)
 
-    #cerate an action decorator that calls unregister
-
-
+    @action 
+    async def unregister_logger(self) -> None:
+        self._unregister()
+    
 async def main() -> int:
 
     my_app = get_globus_app()
@@ -105,65 +104,6 @@ async def main() -> int:
 
         # await fac.unregister()
 
-        """
-        # 2a. Create User (optional — create_key will auto-create if needed)
-        # user_result = c.create_user()
-        # print(json.dumps(user_result, indent=2, default=str))
-
-        # 2b. Create Key — returns AWS IAM credentials + Kafka bootstrap endpoint
-        key_result = c.create_key()
-        print(json.dumps(key_result, indent=2, default=str))
-
-        # 2c. List Namespaces
-        namespaces_result = c.list_namespaces()
-        print(json.dumps(namespaces_result, indent=2, default=str))
-        # 2d. Create Topic
-        topic_name = f"topic-{str(uuid.uuid4())[:5]}"
-        create_topic_result = c.create_topic(topic_name)
-        print(json.dumps(create_topic_result, indent=2, default=str))
-
-        kafka_topic = f"{c.namespace}.{topic_name}"
-        print(f"\nKafka topic name: {kafka_topic}")
-
-        # 3a. Produce Messages
-        p = KafkaProducer(kafka_topic)
-        for i in range(3):
-            message = {
-                "message_id": i + 1,
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "content": f"Message {i + 1}",
-            }
-            future = p.send(kafka_topic, message)
-            result = future.get(timeout=30)
-            print(f"Produced message {i + 1}: offset={result.offset}")
-        p.close()
-
-        # 3b. Consume Messages
-        consumer = KafkaConsumer(kafka_topic, auto_offset_reset="earliest")
-        messages = consumer.poll(timeout_ms=10000)
-        for tp, msgs in messages.items():
-            for message in msgs:
-                data = json.loads(message.value.decode("utf-8"))
-                print(f"Consumed: {data}")
-        consumer.close()
-    
-        # 4a. Recreate Topic (delete + recreate, clearing all messages)
-        recreate_result = c.recreate_topic(topic_name)
-        print(json.dumps(recreate_result, indent=2, default=str))
-
-        # 4b. Delete Topic
-        delete_topic_result = c.delete_topic(topic_name)
-        print(json.dumps(delete_topic_result, indent=2, default=str))
-     
-        # 5a. Delete Key (removes IAM access key; topics + namespace preserved)
-        delete_key_result = c.delete_key()
-        print(json.dumps(delete_key_result, indent=2, default=str))
-            
-        # 5b. Delete User (full cleanup: user, keys, policies, topics, namespace — irreversible)
-        # delete_user_result = c.delete_user()
-        # print(json.dumps(delete_user_result, indent=2, default=str))
-        """
- 
     return 0
 
 
