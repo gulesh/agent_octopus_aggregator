@@ -9,6 +9,10 @@ import uuid
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
+from dotenv import load_dotenv 
+
+load_dotenv()
+
 from academy.agent import action
 from academy.agent import Agent
 from academy.agent import loop
@@ -25,9 +29,6 @@ from academy.exchange import LocalExchangeFactory
 
 EXCHANGE_ADDRESS = 'https://exchange.academy-agents.org'
 
-# os.environ["ACADEMY_TUTORIAL_ENDPOINT"] = "1350417f-2d32-4082-89f3-f1e91a476c81"
-os.environ["DIASPORA_SDK_CLIENT_ID"] = "97313876-72ee-4405-bfaf-7164d9c068a3"
-os.environ["DIASPORA_SDK_CLIENT_SECRET"]= "cUAIfxOY098gidOgn5xQ+t0IQ5hIaVYxorVwJ/SRpno="
 
 class ChatBot(Agent):
     def __init__(self, msg: str, topic_name: str, bot_num: int) -> None:
