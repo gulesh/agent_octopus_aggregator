@@ -182,10 +182,12 @@ class DiasporaLogConfig(LogConfig):
 
         def uninitialize() -> None:
             target.removeHandler(handler)
-            # producer.close() sets _closed=True before calling flush, so
-            # __del__ sees the flag and skips its own close attempt.
             with contextlib.suppress(Exception):
                 producer.close(timeout=self.send_timeout)
+            # Force _closed=True so __del__ is a no-op even if close()
+            # raised before committing the flag internally.
+            if hasattr(producer, '_closed'):
+                producer._closed = True
             with contextlib.suppress(Exception):
                 handler.close()
 
