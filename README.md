@@ -7,10 +7,15 @@
 ```
 
 ### Environment Variables
-Copy `.env` and fill in your credentials before running:
 ```
-DIASPORA_SDK_CLIENT_ID=your_client_id
-DIASPORA_SDK_CLIENT_SECRET=your_client_secret
-# ACADEMY_TUTORIAL_ENDPOINT=your_endpoint  # optional, uses local executor if unset
+cp .env.example .env
+# then edit .env with your real credentials
 ```
-`.env` is gitignored and must not be committed.
+
+> **WARNING: Never commit `.env` — it contains secrets and is gitignored.**
+
+| Variable | Required | Description |
+|---|---|---|
+| `DIASPORA_SDK_CLIENT_ID` | yes | Diaspora client ID |
+| `DIASPORA_SDK_CLIENT_SECRET` | yes | Diaspora client secret |
+| `ACADEMY_TUTORIAL_ENDPOINT` | no | Globus Compute endpoint ID; uses local executor if unset |
