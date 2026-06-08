@@ -1,0 +1,9 @@
+.venv*/
+__pycache__/
+*.pyc
+*.pyo
+
+build/
+dist/
+academy_tutorial.egg-info/
+*.egg-info/
