@@ -15,21 +15,18 @@ load_dotenv()
 
 from academy.agent import action
 from academy.agent import Agent
-from academy.agent import loop
 from academy.exchange.cloud.client import HttpExchangeFactory
+from academy.exchange import LocalExchangeFactory
 from academy.handle import Handle
-from diaspora_logger import DiasporaLogConfig
+from academy.logging.recommended import recommended_logging
 from academy.manager import Manager
-from globus_compute_sdk import Executor as GCExecutor
 from diaspora_event_sdk import Client, get_globus_app
 from diaspora_context import get_diaspora_events
-from diaspora_logger import set_diaspora_logger
-
-from academy.exchange import LocalExchangeFactory
+from diaspora_logger import DiasporaLogConfig
+from globus_compute_sdk import Executor as GCExecutor
 
 logger = logging.getLogger("academy.station")
 
-EXCHANGE_ADDRESS = 'https://exchange.academy-agents.org'
 
 class ChatBot(Agent):
     def __init__(self, msg: str, topic_name: str, bot_num: int) -> None:
@@ -67,14 +64,17 @@ async def main() -> int:
 
     if 'ACADEMY_TUTORIAL_ENDPOINT' in os.environ:
         executor = GCExecutor(os.environ['ACADEMY_TUTORIAL_ENDPOINT'])
+        factory = HttpExchangeFactory()
+        log_cfg = recommended_logging()
     else:
         executor = ThreadPoolExecutor(max_workers=3)
-        
+        factory = LocalExchangeFactory()
+        log_cfg = DiasporaLogConfig(kafka_topic, send_timeout=10)
+
     async with await Manager.from_exchange_factory(
-        # factory=HttpExchangeFactory(EXCHANGE_ADDRESS, auth_method='globus'),
-        factory=LocalExchangeFactory(),
+        factory=factory,
         executors=executor,
-        log_config=DiasporaLogConfig(kafka_topic, send_timeout=10),
+        log_config=log_cfg,
     ) as manager:
        
         print(f"\nKafka topic: {kafka_topic}")
