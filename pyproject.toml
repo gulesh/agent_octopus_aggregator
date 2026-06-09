@@ -6,12 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "academy-tutorial"
 version = "0.1.0"
 authors = [
-    {name = "Alok Kamatar", email = "alokvk2@uchicago.edu"},
-    {name = "Greg Pauloski"},
-    {name = "Globus Labs"},
+    {name = "Gulesh Shukla", email = "gshukla14@uchicago.edu"},
 ]
 maintainers = [
-    {name = "Alok Kamatar", email = "alokvk2@uchicago.edu"},
+     {name = "Gulesh Shukla", email = "gshukla14@uchicago.edu"},
 ]
 description = "Materials for academy tutorial"
 readme = "README.md"
@@ -176,9 +174,3 @@ convention = "google"
 include = ["academy_tutorial"]
 exclude = ["tests*", "testing*"]
 namespaces = false
-
-[dependency-groups]
-llm = [
-    "langchain>=1.2.10",
-    "langchain-openai>=1.1.10",
-]
