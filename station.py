@@ -33,10 +33,11 @@ class ChatBot(Agent):
         super().__init__()
         self.message = msg
         self.bot_num = bot_num
+        self.logger = logging.getLogger("academy.station")
 
     @action
     async def respond(self) -> str:
-        logger.info('Bot %d', self.bot_num)
+        self.logger.info('Bot %d', self.bot_num)
         return self.message
 
 class Facilitator(Agent):
@@ -45,13 +46,14 @@ class Facilitator(Agent):
         self.bot1 = bot1
         self.bot2 = bot2
         self.topic_name = topic_name
+        self.logger = logging.getLogger("academy.station")
 
     @action
     async def send_messages(self) -> None:
         msg1 = await self.bot1.respond()
         msg2 = await self.bot2.respond()
-        logger.info('Bot1 says: %s', msg1)
-        logger.info('Bot2 says: %s', msg2)
+        self.logger.info('Bot1 says: %s', msg1)
+        self.logger.info('Bot2 says: %s', msg2)
 
 async def main() -> int:
 
