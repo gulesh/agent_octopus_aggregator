@@ -31,6 +31,7 @@ logger = logging.getLogger("academy.station")
 class ChatBot(Agent):
     def __init__(self, msg: str, topic_name: str, bot_num: int) -> None:
         super().__init__()
+        import logging
         self.message = msg
         self.bot_num = bot_num
         self.logger = logging.getLogger("academy.station")
@@ -43,6 +44,7 @@ class ChatBot(Agent):
 class Facilitator(Agent):
     def __init__(self, bot1: Handle[ChatBot], bot2: Handle[ChatBot], topic_name: str) -> None:
         super().__init__()
+        import logging
         self.bot1 = bot1
         self.bot2 = bot2
         self.topic_name = topic_name
