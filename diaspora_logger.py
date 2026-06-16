@@ -44,7 +44,6 @@ def _json_safe(value: Any) -> Any:
         return [_json_safe(v) for v in value]
     return repr(value)
 
-
 class DiasporaHandler(logging.Handler):
     """Logging handler that publishes records to a Diaspora Kafka topic."""
 
@@ -184,7 +183,6 @@ class DiasporaLogConfig(LogConfig):
             target.removeHandler(handler)
             with contextlib.suppress(Exception):
                 producer.close(timeout=self.send_timeout)
-            # Force _closed=True so __del__ is a no-op even if close()
             # raised before committing the flag internally.
             if hasattr(producer, '_closed'):
                 producer._closed = True
