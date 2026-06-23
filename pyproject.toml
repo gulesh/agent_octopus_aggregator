@@ -3,7 +3,7 @@ requires = ["setuptools>=64.0", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "academy-tutorial"
+name = "academy_octopus_integration"
 version = "0.1.0"
 authors = [
     {name = "Gulesh Shukla", email = "gshukla14@uchicago.edu"},
@@ -11,7 +11,7 @@ authors = [
 maintainers = [
      {name = "Gulesh Shukla", email = "gshukla14@uchicago.edu"},
 ]
-description = "Materials for academy tutorial"
+description = "Example Application Academy Diaspora For Logging"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -22,13 +22,13 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
+    "academy-diaspora-logger",
     "academy-py>=0.3.1",
     "certifi",
     "diaspora-event-sdk",
     "emoji",
     "globus-compute-sdk",
     "ipykernel>=7.2.0",
-    "kafka-python",
     "python-dotenv",
 ]
 
@@ -41,7 +41,6 @@ dev = [
     "pytest-asyncio>=1.1",
     "nb-clean>=2.0.0",
 ]
-
 
 [tool.codespell]
 skip = """
@@ -72,16 +71,6 @@ no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_configs = true
 warn_unused_ignores = true
-
-[[tool.mypy.overrides]]
-module = "testing.*"
-allow_incomplete_defs = true
-allow_untyped_defs = true
-
-[[tool.mypy.overrides]]
-module = "tests.*"
-allow_incomplete_defs = true
-allow_untyped_defs = true
 
 [tool.pytest.ini_options]
 asyncio_default_fixture_loop_scope = "function"
@@ -157,7 +146,7 @@ multiline-quotes = "double"
 
 [tool.ruff.lint.isort]
 force-single-line = true
-known-first-party = ["academy_tutorial", "tests", "testing"]
+known-first-party = ["academy_octopus_integration"]
 order-by-type = false
 required-imports = ["from __future__ import annotations"]
 
@@ -173,6 +162,8 @@ required-imports = ["from __future__ import annotations"]
 convention = "google"
 
 [tool.setuptools.packages.find]
-include = ["academy_tutorial"]
-exclude = ["tests*", "testing*"]
+include = ["academy_octopus_integration"]
 namespaces = false
+
+[tool.setuptools]
+py-modules = ["diaspora_logger"]

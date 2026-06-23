@@ -9,16 +9,17 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
-from dotenv import load_dotenv 
+import certifi
+from dotenv import load_dotenv
 
 load_dotenv()
+os.environ.setdefault('SSL_CERT_FILE', certifi.where())
 
 from academy.agent import action
 from academy.agent import Agent
 from academy.exchange.cloud.client import HttpExchangeFactory
 from academy.exchange import LocalExchangeFactory
 from academy.handle import Handle
-from academy.logging.recommended import recommended_logging
 from academy.manager import Manager
 from diaspora_event_sdk import Client, get_globus_app
 from diaspora_context import get_diaspora_events
@@ -26,7 +27,6 @@ from diaspora_logger import DiasporaLogConfig
 from globus_compute_sdk import Executor as GCExecutor
 
 logger = logging.getLogger("academy.station")
-
 
 class ChatBot(Agent):
     def __init__(self, msg: str, topic_name: str, bot_num: int) -> None:
@@ -69,7 +69,7 @@ async def main() -> int:
     if 'ACADEMY_TUTORIAL_ENDPOINT' in os.environ:
         executor = GCExecutor(os.environ['ACADEMY_TUTORIAL_ENDPOINT'])
         factory = HttpExchangeFactory()
-        log_cfg = recommended_logging()
+        log_cfg = DiasporaLogConfig.prefetch(kafka_topic, send_timeout=10)
     else:
         executor = ThreadPoolExecutor(max_workers=3)
         factory = LocalExchangeFactory()
@@ -105,6 +105,7 @@ async def main() -> int:
             print(f"[{ts}]{agent_str} {state or msg}" + (f" ({action})" if action else ""))
 
         delete_topic_result = c.delete_topic(topic_name)
+
         print(json.dumps(delete_topic_result, indent=2, default=str))
 
     return 0
